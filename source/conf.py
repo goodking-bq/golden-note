@@ -54,7 +54,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = "golden's 文档笔记"
+project = u"golden's 文档笔记"
 copyright = '2017, golden'
 author = 'golden'
 
