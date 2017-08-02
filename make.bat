@@ -12,6 +12,13 @@ set BUILDDIR=build
 set SPHINXPROJ=operationplatform
 
 if "%1" == "" goto help
+if "%1" == "pdf" (
+   %SPHINXBUILD% -b pdf -C  %SOURCEDIR% %ALLSPHINXOPTS% %BUILDDIR%/pdf
+   if errorlevel 1 exit /b 1
+   echo.
+   echo.Build finished. The pdf files are in %BUILDDIR%/pdf.
+   goto end
+)
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (

@@ -9,12 +9,12 @@
 .. toctree::
    :maxdepth: 2
 
-   sphinx/quick-start
+   sphinx/index.rst
+   docker/index.rst
 
 
 目录
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
