@@ -83,7 +83,7 @@ sphinx 代码高亮用的pygments模块。
   - diff 对比
   - dedent 缩进
 
+
 .. literalinclude:: ../conf.py
   :language: python
   :linenos:
-  :dedent: 4
