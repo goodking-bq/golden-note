@@ -4,18 +4,19 @@
    contain the root `toctree` directive.
 
 笔记!
-==============================================
+##########
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
 
    sphinx/index.rst
+   python/index.rst
    docker/index.rst
    work/index.rst
 
 
-目录
-==================
+其他页面
+##########
 
 * :ref:`genindex`
 * :ref:`search`
