@@ -1,5 +1,5 @@
 Python 常用内建函数搜集
------------------
+----------------------------------
 
 * **map**
 
@@ -59,7 +59,7 @@ Python 常用内建函数搜集
 
 * **getattr**
 
-    ``getattr(object,name[,default])` 函数返回object的name属性值, 无属性会报错。
+    ``getattr(object,name[,default])`` 函数返回object的name属性值, 无属性会报错。
 
     例：
 
