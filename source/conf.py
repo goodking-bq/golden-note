@@ -32,14 +32,14 @@
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages']
+              'sphinx.ext.doctest',
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.todo',
+              'sphinx.ext.coverage',
+              'sphinx.ext.mathjax',
+              'sphinx.ext.ifconfig',
+              'sphinx.ext.viewcode',
+              'sphinx.ext.githubpages']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -74,8 +74,8 @@ release = 'lastest'
 # Usually you set "language" from the command line for these cases.
 language = "zh_CN"
 html_search_language = 'zh_CN'
-source_encoding='UTF-8'
-locale_dirs=['locales','./locale']
+source_encoding = 'UTF-8'
+locale_dirs = ['locales', './locale']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
@@ -87,20 +87,19 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
-
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme ='sphinx_rtd_theme'
+html_theme = 'sphinx_rtd_theme'
 html_theme_path = ['_themes']
 html_theme_options = {
     'collapse_navigation': True,
     'display_version': True,
     'navigation_depth': 3,
 }
-html_show_sourcelink=True
+html_show_sourcelink = True
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -112,12 +111,10 @@ html_show_sourcelink=True
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'operationplatformdoc'
-
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -153,7 +150,6 @@ latex_documents = [
      'golden', 'manual'),
 ]
 
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -162,7 +158,6 @@ man_pages = [
     (master_doc, 'operationplatform', 'operation platform Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -174,8 +169,6 @@ texinfo_documents = [
      author, 'operationplatform', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
 
 # -- Options for Epub output ----------------------------------------------
 
@@ -196,8 +189,6 @@ epub_copyright = copyright
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']
-
-
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
