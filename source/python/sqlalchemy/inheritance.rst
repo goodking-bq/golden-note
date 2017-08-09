@@ -363,7 +363,8 @@ Concrete Table Inheritance
 
         .. warning::
 
-            - 基类默认建表，如果 __tablename__=None 则不建
+            - 基类默认建表，如果 __tablename__=None 则不建 ，但是也不能查询
+            - 有字段会建表
             - 继承类会继承所有方法和字段
 
     - 基类继承 AbstractConcreteBase
