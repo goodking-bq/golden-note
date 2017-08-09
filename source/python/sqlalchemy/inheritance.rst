@@ -81,38 +81,38 @@ Joined Table Inheritance
     :widths: 10 20 20
     :header-rows: 1
 
-    *   - id
-        - name
-        - type
-    *   - 1
-        - animal1
-        - animal
-    *   - 2
-        - animal2
-        - cat
-    *   - 3
-        - animal3
-        - dog
+                *   - id
+                    - name
+                    - type
+                *   - 1
+                    - animal1
+                    - animal
+                *   - 2
+                    - animal2
+                    - cat
+                *   - 3
+                    - animal3
+                    - dog
 
 
 .. list-table:: Cat Table
     :widths: 10 20
     :header-rows: 1
 
-    *   - id
-        - cat_name
-    *   - 2
-        - cat1
+                *   - id
+                    - cat_name
+                *   - 2
+                    - cat1
 
 
 .. list-table:: Dog Table
     :widths: 10 20
     :header-rows: 1
 
-    *   - id
-        - dog_name
-    *   - 3
-        - dog1
+                *   - id
+                    - dog_name
+                *   - 3
+                    - dog1
 
 Single Table Inheritance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -183,26 +183,26 @@ Single Table Inheritance
     :widths: 10 20 20 20 20
     :header-rows: 1
 
-    *   - id
-        - name
-        - type
-        - cat_name
-        - dog_name
-    *   - 1
-        - animal1
-        - animal
-        - NULL
-        - NULL
-    *   - 2
-        - animal2
-        - cat
-        - cat1
-        - NULL
-    *   - 3
-        - animal3
-        - dog
-        - NULL
-        - dog1
+                *   - id
+                    - name
+                    - type
+                    - cat_name
+                    - dog_name
+                *   - 1
+                    - animal1
+                    - animal
+                    - NULL
+                    - NULL
+                *   - 2
+                    - animal2
+                    - cat
+                    - cat1
+                    - NULL
+                *   - 3
+                    - animal3
+                    - dog
+                    - NULL
+                    - dog1
 
 Concrete Table Inheritance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -216,134 +216,155 @@ Concrete Table Inheritance
 
 具体做法：
 
-#. 使用 *mapper.concrete* 参数
+.. _mapper_concrete__:
+
+#. *mapper.concrete* 基本继承
 
     .. warning::
 
-        这种的话查询基类的时候是不会查询到继承类的。
+        基表和继承表什么关系也没有
+
+            - 查询基类的时候是不会查询到继承类的。
+            - 基类的字段也不会继承，所有继承类是没有基类的字段，引用会报错。
+            - 基表没有 __tablename__ 也会建表
 
     * 基类不需要特殊设置
     * 继承类需要在 __mapper_args__ 添加下面参数
 
-        - concrete 设置为 ``True``
+        - concrete 设置为 ``True`` 说明是具体的，与基表没有具体的关系
 
     一个例子::
 
-        class Employee(db.Model):
-            __tablename__ = 'employee'
+        class Animal(db.Model):
+            """动物基类"""
+            id = db.Column(db.Integer, primary_key=True)
+            name = db.Column(db.String(255))
+            type = db.Column(db.String(20))
 
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
+        class Cat(Animal):
+            """爬行动物"""
+            __tablename__ = 'animal_cat'
+            id = db.Column(db.Integer, primary_key=True)
+            cat_name = db.Column(db.String(255))
+            __mapper_args__ = {
+                'concrete': True
+            }
 
-        class Manager(Employee):
-            __tablename__ = 'manager'
-
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
-            manager_data = Column(String(50))
+        class Dog(Animal):
+            __tablename__ = 'animal_dog'
+            id = db.Column(db.Integer, primary_key=True)
+            dog_name = db.Column(db.String(255))
 
             __mapper_args__ = {
                 'concrete': True
             }
 
-.. _concretebase:
-
-#. 使用 *ConcreteBase* 作为基类的基类
-
-    .. warning::
-
-        这种方式的话，查询基类会连带继承类一起查询，基类没有的字段的值为 None,表之间的数据用union all连接起来
-        查询得到的对象是基类的对象
 
 
-    - 基类继承 ConcreteBase以及Base类
-    - 基类和继承类对的 __mapper_args__ 属性都需要添加下面内容
 
-        - polymorphic_identity 类别区分
-        - concrete 必须设置为 True
+#. Polymorphic Loading - 多态加载继承
 
-    官方给的例子::
+    .. hint::
 
-        from sqlalchemy.ext.declarative import ConcreteBase
+        **多态** 意味着变量并不知道引用的对象是什么，根据引用对象的不同表现不同的行为方式。它在类的继承中得以实现，在类的方法调用中得以体现。
 
-        class Employee(ConcreteBase, db.Model):
-            __tablename__ = 'employee'
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
+    .. _concretebase:
+    * *ConcreteBase* 具体类基类？
 
-            __mapper_args__ = {
-                'polymorphic_identity': 'employee',
-                'concrete': True
-            }
+        .. warning::
 
-        class Manager(Employee):
-            __tablename__ = 'manager'
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
-            manager_data = Column(String(40))
+            之所以叫具体类，因为它会在数据库建表，对数据库来说是具体的。
 
-            __mapper_args__ = {
-                'polymorphic_identity': 'manager',
-                'concrete': True
-            }
+            同 :ref:`mapper.concrete <mapper_concrete__>` 的区别是：
 
-        class Engineer(Employee):
-            __tablename__ = 'engineer'
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
-            engineer_info = Column(String(40))
+                - 查询基类会连带继承类一起查询，表之间的数据用union all连接起来
+                - 查询得到的对象是各自的对象
 
-            __mapper_args__ = {
-                'polymorphic_identity': 'engineer',
-                'concrete': True
-            }
+        - 基类继承 ConcreteBase以及Base类
+        - 基类和继承类对的 __mapper_args__ 属性都需要添加下面内容
 
-.. _abstract__:
+            - polymorphic_identity 类别区分
+            - concrete 必须设置为 True
 
-#. 使用 __abstract__  属性
+        例子::
 
-    .. warning::
+           class Animal(ConcreteBase, db.Model):
+                """动物基类"""
+                id = db.Column(db.Integer, primary_key=True)
+                name = db.Column(db.String(255))
 
-        - 这种继承 与  :ref:`ConcreteBase <concretebase>` 唯一不同的就是查询基类时会得到得到的是基类和继承类对象的列表
-        - 并且基类是不能有 __tablename__属性，也就是 基类是没有数据表的
+                @declared_attr
+                def __mapper_args__(cls):
+                    return {'polymorphic_identity': cls.__name__.lower(),
+                            'concrete': True}
+
+                def get_cat_name(self):
+                    return self.cat_name
+
+                def get_dog_name(self):
+                    return self.dog_name
 
 
-    - 只需要在基类中添加 __abstract__ 属性就行了
-    - 继承类中也需要在  __mapper_args__ 添加参数：
+            class Cat(Animal):
+                """爬行动物"""
+                __tablename__ = 'animal_cat'
+                id = db.Column(db.Integer, primary_key=True)
+                cat_name = db.Column(db.String(255))
 
-        -  polymorphic_identity
 
-    官方例子::
+            class Dog(Animal):
+                __tablename__ = 'animal_dog'
+                id = db.Column(db.Integer, primary_key=True)
+                dog_name = db.Column(db.String(255))
 
-        class Employee(db.Model):
-            __abstract__ = True
+        测试::
 
-        class Manager(Employee):
-            __tablename__ = 'manager'
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
-            manager_data = Column(String(40))
+            animal = Animal()
+            animal.name = 'animal1'
+            db.session.add(animal)
+            db.session.commit()
+            cat = Cat()
+            # cat.name = 'animal2' # 具体基类的字段不能被继承，不能被赋值
+            cat.cat_name = 'cat1'
+            db.session.add(cat)
+            db.session.commit()
+            dog = Dog()
+            # dog.name = 'animal2'
+            dog.dog_name = 'dog1'
+            db.session.add(dog)
+            db.session.commit()
+            animals = db.session.query(Animal).all()
+            cats = Cat.query.all()
+            dogs = Dog.query.all()
+            print(animals)
+            print(cats)
+            print(cats[0].get_cat_name())
+            print(dogs[0].get_dog_name())
+            print(dogs[0].get_cat_name()) # Dog 有这个方法，带上没有 cat_name属性，所以报错。
 
-            __mapper_args__ = {
-                'polymorphic_identity': 'manager',
-            }
+            [<monitor.models.test.Animal object at 0x000000000AFA1F28>, <monitor.models.test.Cat object at 0x000000000E686080>, <monitor.models.test.Dog object at 0x000000000E6865F8>]
+            [<monitor.models.test.Cat object at 0x000000000E686080>]
+            cat1
+            dog1
 
-        class Engineer(Employee):
-            __tablename__ = 'engineer'
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
-            engineer_info = Column(String(40))
+            Error
+            Traceback (most recent call last):
+              File "C:\Users\golden\Anaconda3\envs\flask\lib\unittest\case.py", line 329, in run
+                testMethod()
+              File "D:\quleduo_manager\test\models.py", line 246, in test_con
+                print(dogs[0].get_cat_name())
+              File "D:\quleduo_manager\monitor\models\test.py", line 23, in get_cat_name
+                return self.cat_name
+            AttributeError: 'Dog' object has no attribute 'cat_name'
 
-            __mapper_args__ = {
-                'polymorphic_identity': 'engineer',
-            }
+#. Abstract Concrete Classes - 抽象具体类
 
-#. 使用 AbstractConcreteBase 类
+    #. 使用 AbstractConcreteBase 类
 
-    .. warning::
+        .. warning::
 
-        - 这种同 :ref:`__abstract__ <abstract__>` 差不多，唯一不同的是 基类也是可以建表的，只要给了 __tablename__ 属性
-        - 这个类继承了  ConcreteBase 类
+            - 基类默认建表，如果 __tablename__=None 则不建
+            - 继承类会继承所有方法和字段
 
     - 基类继承 AbstractConcreteBase
     - 继承类的 __mapper_args__ 需要下面参数
@@ -355,27 +376,71 @@ Concrete Table Inheritance
 
         from sqlalchemy.ext.declarative import AbstractConcreteBase
 
-        class Employee(AbstractConcreteBase, db.Model):
-            pass
+        class Animal(AbstractConcreteBase, db.Model):
+            """动物基类"""
+            __tablename__ = None
+            id = db.Column(db.Integer, primary_key=True)
+            name = db.Column(db.String(255))
 
-        class Manager(Employee):
-            __tablename__ = 'manager'
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
-            manager_data = Column(String(40))
+            @declared_attr
+            def __mapper_args__(cls):
+                return {'polymorphic_identity': cls.__name__.lower(),
+                        'concrete': True} if cls.__name__ != "Animal" else {}
 
-            __mapper_args__ = {
-                'polymorphic_identity': 'manager',
-                'concrete': True
-            }
+            def get_cat_name(self):
+                return self.cat_name
 
-        class Engineer(Employee):
-            __tablename__ = 'engineer'
-            id = Column(Integer, primary_key=True)
-            name = Column(String(50))
-            engineer_info = Column(String(40))
+            def get_dog_name(self):
+                return self.dog_name
 
-            __mapper_args__ = {
-                'polymorphic_identity': 'engineer',
-                'concrete': True
-            }
+
+        class Cat(Animal):
+            """爬行动物"""
+            __tablename__ = 'animal_cat'
+            cat_name = db.Column(db.String(255))
+
+
+        class Dog(Animal):
+            __tablename__ = 'animal_dog'
+            dog_name = db.Column(db.String(255))
+
+
+        cat = Cat()
+        cat.name = 'animal2'
+        cat.cat_name = 'cat1'
+        db.session.add(cat)
+        db.session.commit()
+        dog = Dog()
+        dog.name = 'animal2'
+        dog.dog_name = 'dog1'
+        db.session.add(dog)
+        db.session.commit()
+        animals = db.session.query(Animal).all()
+        cats = Cat.query.all()
+        dogs = Dog.query.all()
+        print(animals)
+        print(cats)
+        print(cats[0].get_cat_name())
+        print(dogs[0].get_dog_name())
+        print(dogs[0].get_cat_name()) #报错
+
+        [<monitor.models.test.Dog object at 0x000000000E6A00F0>, <monitor.models.test.Cat object at 0x000000000B0C4160>]
+        [<monitor.models.test.Cat object at 0x000000000B0C4160>]
+        cat1
+        dog1
+
+        Error
+        Traceback (most recent call last):
+          File "C:\Users\golden\Anaconda3\envs\flask\lib\unittest\case.py", line 329, in run
+            testMethod()
+          File "D:\quleduo_manager\test\models.py", line 246, in test_con
+            print(dogs[0].get_cat_name())
+          File "D:\quleduo_manager\monitor\models\test.py", line 23, in get_cat_name
+            return self.cat_name
+          File "C:\Users\golden\Anaconda3\envs\flask\lib\site-packages\sqlalchemy\orm\attributes.py", line 293, in __get__
+            return self.descriptor.__get__(instance, owner)
+          File "C:\Users\golden\Anaconda3\envs\flask\lib\site-packages\sqlalchemy\orm\descriptor_props.py", line 492, in __get__
+            warn()
+          File "C:\Users\golden\Anaconda3\envs\flask\lib\site-packages\sqlalchemy\orm\descriptor_props.py", line 480, in warn
+            (self.parent, self.key, self.parent))
+        AttributeError: Concrete Mapper|Dog|animal_dog does not implement attribute 'cat_name' at the instance level.  Add this property explicitly to Mapper|Dog|animal_dog.

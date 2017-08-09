@@ -10,6 +10,7 @@
    :maxdepth: 1
 
    sphinx/index.rst
+   git/index.rst
    python/index.rst
    docker/index.rst
    work/index.rst
