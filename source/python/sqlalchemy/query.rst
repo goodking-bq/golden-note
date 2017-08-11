@@ -48,7 +48,7 @@ query的 参数控制返回
         session.query(User).filter(type=1).filter_by(User.id.in_([1,2,3]))
 
 filter - 基本的操作符
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 
 数据过滤是通过filter来实现的，支持数据库里所有的操作符。
 
