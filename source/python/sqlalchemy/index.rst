@@ -6,4 +6,5 @@ Sqlalchemy 框架
 
     query
     inheritance
+    json_model
 
