@@ -1,6 +1,8 @@
 Model 轻松转 dict 和 json
 --------------------------------
 
+将sqlalchemy的模型数据转为dict 或是json
+
 .. code-block:: python
 
     # coding:utf-8

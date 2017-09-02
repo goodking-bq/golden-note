@@ -81,38 +81,38 @@ Joined Table Inheritance
     :widths: 10 20 20
     :header-rows: 1
 
-                *   - id
-                    - name
-                    - type
-                *   - 1
-                    - animal1
-                    - animal
-                *   - 2
-                    - animal2
-                    - cat
-                *   - 3
-                    - animal3
-                    - dog
+    *   - id
+        - name
+        - type
+    *   - 1
+        - animal1
+        - animal
+    *   - 2
+        - animal2
+        - cat
+    *   - 3
+        - animal3
+        - dog
 
 
 .. list-table:: Cat Table
     :widths: 10 20
     :header-rows: 1
 
-                *   - id
-                    - cat_name
-                *   - 2
-                    - cat1
+    *   - id
+        - cat_name
+    *   - 2
+        - cat1
 
 
 .. list-table:: Dog Table
     :widths: 10 20
     :header-rows: 1
 
-                *   - id
-                    - dog_name
-                *   - 3
-                    - dog1
+    *   - id
+        - dog_name
+    *   - 3
+        - dog1
 
 Single Table Inheritance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -183,26 +183,26 @@ Single Table Inheritance
     :widths: 10 20 20 20 20
     :header-rows: 1
 
-                *   - id
-                    - name
-                    - type
-                    - cat_name
-                    - dog_name
-                *   - 1
-                    - animal1
-                    - animal
-                    - NULL
-                    - NULL
-                *   - 2
-                    - animal2
-                    - cat
-                    - cat1
-                    - NULL
-                *   - 3
-                    - animal3
-                    - dog
-                    - NULL
-                    - dog1
+    *   - id
+        - name
+        - type
+        - cat_name
+        - dog_name
+    *   - 1
+        - animal1
+        - animal
+        - NULL
+        - NULL
+    *   - 2
+        - animal2
+        - cat
+        - cat1
+        - NULL
+    *   - 3
+        - animal3
+        - dog
+        - NULL
+        - dog1
 
 Concrete Table Inheritance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
