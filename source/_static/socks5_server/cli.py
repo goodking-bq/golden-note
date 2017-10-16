@@ -18,11 +18,12 @@ def tcp():
 def udp():
     import socket
     import socks
-    socks.set_default_proxy(socks.SOCKS5, port=8888, addr='127.0.0.1', username='golden', password='golden')
+    socks.set_default_proxy(socks.SOCKS5, port=8888, addr='192.168.2.41', username='golden', password='golden')
     socket.socket = socks.socksocket
-    address = ('127.0.0.1', 31500)
+    address = ('www.baidu.com', 80)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.sendto(b'aa', address)
+    print(s.recv(1024))
     print('aa')
 
 
