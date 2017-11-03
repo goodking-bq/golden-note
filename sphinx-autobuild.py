@@ -10,4 +10,5 @@ __date__ = '2017/8/11'
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.argv += ['-p', '8001']
     sys.exit(main())
