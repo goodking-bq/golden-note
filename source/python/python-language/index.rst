@@ -7,3 +7,4 @@ Python 基础
 
     build-in-functions
     unittest
+    struct
